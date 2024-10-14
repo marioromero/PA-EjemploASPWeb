@@ -164,6 +164,7 @@ namespace EjemploASPWeb.Controllers
         [HttpGet("VerificarNombreUsuario")]
         public async Task<IActionResult> VerificarNombreUsuario(string nombreUsuario)
         {
+            await Task.Delay(3000);
             var usuarioExiste = await _context.Usuario.AnyAsync(u => u.Nombre == nombreUsuario);
             return Ok(usuarioExiste);
         }
