@@ -32,14 +32,14 @@ namespace EjemploASPWeb.Controllers
         {
             if (id == null || _context.Usuario == null)
             {
-                return NotFound();
+                return View("Error", "El ID del usuario no puede ser nulo o la entidad Usuario no está disponible.");
             }
 
             var usuario = await _context.Usuario
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
-                return NotFound();
+                return View("Error", "Usuario no encontrado.");
             }
 
             return View(usuario);
