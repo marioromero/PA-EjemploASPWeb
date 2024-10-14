@@ -159,5 +159,13 @@ namespace EjemploASPWeb.Controllers
         {
           return (_context.Usuario?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+        [HttpGet("VerificarNombreUsuario")]
+        public async Task<IActionResult> VerificarNombreUsuario(string nombreUsuario)
+        {
+            var usuarioExiste = await _context.Usuario.AnyAsync(u => u.Nombre == nombreUsuario);
+            return Ok(usuarioExiste);
+        }
     }
 }
