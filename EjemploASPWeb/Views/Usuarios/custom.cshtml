@@ -1,0 +1,44 @@
+﻿@model EjemploASPWeb.Controllers.CustomViewModel
+
+@{
+    var usuarios = Model.Usuarios;
+    var herramientas = Model.Herramientas;
+}
+
+<h2>Usuarios</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in usuarios)
+        {
+            <tr>
+                <td>@usuario.Nombre</td>
+                <td>@usuario.Apellido</td>
+                <td>@usuario.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Herramientas</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var herramienta in herramientas)
+        {
+            <tr>
+                <td>@herramienta</td>
+            </tr>
+        }
+    </tbody>
+</table>

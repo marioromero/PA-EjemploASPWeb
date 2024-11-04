@@ -14,8 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" class="form-control" id="nombreUsuario" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
+                <small id="nombreUsuarioError" class="form-text text-danger" style="display:none;">El nombre de usuario ya existe.</small>
             </div>
             <div class="form-group">
                 <label asp-for="Apellido" class="control-label"></label>
@@ -43,7 +44,7 @@
                 <span asp-validation-for="NumeroDeMascotas" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" id="submitButton" />
             </div>
         </form>
     </div>
@@ -53,6 +54,70 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<!-- Overlay para deshabilitar la pantalla y mostrar el círculo de carga -->
+<div id="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000;">
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+        <div class="spinner-border text-light" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
+
+
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+    <script>
+        $(document).ready(function () {
+
+
+
+
+            $('#nombreUsuario').on('input', function () {
+                var nombreUsuario = $(this).val();
+
+               
+
+                if (nombreUsuario.length > 0) {
+
+
+                    //$('#overlay').show(); // Mostrar overlay
+
+
+
+                    $.ajax({
+                        url: '@Url.Action("VerificarNombreUsuario", "Usuarios")',
+                        type: 'GET',
+                        data: { nombreUsuario: nombreUsuario },
+                        success: function (data) {
+                            if (data) {
+                                $('#nombreUsuarioError').show();
+                                $('#submitButton').prop('disabled', true);
+                            } else {
+                                $('#nombreUsuarioError').hide();
+                                $('#submitButton').prop('disabled', false);
+                            }
+                        },
+
+
+                        complete: function () {
+                            $('#overlay').hide(); // Ocultar overlay
+                        }
+                    });
+
+
+
+
+
+                } else {
+                    $('#nombreUsuarioError').hide();
+                    $('#submitButton').prop('disabled', false);
+                }
+            });
+        });
+    </script>
 }

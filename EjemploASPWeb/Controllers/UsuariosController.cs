@@ -32,14 +32,14 @@ namespace EjemploASPWeb.Controllers
         {
             if (id == null || _context.Usuario == null)
             {
-                return NotFound();
+                return View("Error", "El ID del usuario no puede ser nulo o la entidad Usuario no está disponible.");
             }
 
             var usuario = await _context.Usuario
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
             {
-                return NotFound();
+                return View("Error", "Usuario no encontrado.");
             }
 
             return View(usuario);
@@ -159,5 +159,30 @@ namespace EjemploASPWeb.Controllers
         {
           return (_context.Usuario?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+        [HttpGet("VerificarNombreUsuario")]
+        public async Task<IActionResult> VerificarNombreUsuario(string nombreUsuario)
+        {
+            await Task.Delay(3000);
+            var usuarioExiste = await _context.Usuario.AnyAsync(u => u.Nombre == nombreUsuario);
+            return Ok(usuarioExiste);
+        }
+        // GET: Usuarios/Custom
+        public IActionResult Custom()
+        {
+            var usuarios = _context.Usuario.ToList();
+            var herramientas = new  List<object> { "Martillo", "Destornillador", "Llave inglesa" };
+
+            var viewModel = new CustomViewModel
+            {
+                Usuarios = usuarios,
+                Herramientas = herramientas
+            };
+
+            return View(viewModel);
+        }
+
+
     }
 }
